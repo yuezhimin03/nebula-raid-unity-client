@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "bundleVersion": "1.1.0",
+  "minimumAppVersion": "1.0.0",
+  "entrypoint": "main.lua",
+  "files": [
+    {
+      "path": "main.lua",
+      "sha256": "319be1a6af91944b0cbcd71c2d0d57cfa95f202530fb7739bab25d69f2bc5623",
+      "size": 238
+    },
+    {
+      "path": "config/combat.lua",
+      "sha256": "9ae25256015e85f55f996e4dc6612eb1e3ef78b55d7f3397b1625c228aea650a",
+      "size": 58
+    }
+  ]
+}
+

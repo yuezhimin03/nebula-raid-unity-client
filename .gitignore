@@ -1,0 +1,31 @@
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+MemoryCaptures/
+Recordings/
+
+# IDE / .NET
+.vs/
+.vscode/
+.idea/
+*.csproj.user
+*.suo
+*.user
+*.userprefs
+**/bin/
+**/obj/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local run output
+.artifacts/
+TestResults/
+BenchmarkResults/
+

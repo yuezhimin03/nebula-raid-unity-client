@@ -1,0 +1,37 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulaRaid.Core", "src\NebulaRaid.Core\NebulaRaid.Core.csproj", "{6B035127-290F-4F4E-ABF8-AC7421DF9BB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulaRaid.Demo", "src\NebulaRaid.Demo\NebulaRaid.Demo.csproj", "{C7E00C4D-C17C-45E0-BEEC-D0C420225042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulaRaid.Tests", "tests\NebulaRaid.Tests\NebulaRaid.Tests.csproj", "{29F7A16C-C365-4EE7-B728-020C93A439AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulaRaid.Benchmarks", "benchmarks\NebulaRaid.Benchmarks\NebulaRaid.Benchmarks.csproj", "{7B5E9DFB-47B8-4583-A1C4-BF5808A66B5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B035127-290F-4F4E-ABF8-AC7421DF9BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B035127-290F-4F4E-ABF8-AC7421DF9BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B035127-290F-4F4E-ABF8-AC7421DF9BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B035127-290F-4F4E-ABF8-AC7421DF9BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E00C4D-C17C-45E0-BEEC-D0C420225042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E00C4D-C17C-45E0-BEEC-D0C420225042}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E00C4D-C17C-45E0-BEEC-D0C420225042}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E00C4D-C17C-45E0-BEEC-D0C420225042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F7A16C-C365-4EE7-B728-020C93A439AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F7A16C-C365-4EE7-B728-020C93A439AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F7A16C-C365-4EE7-B728-020C93A439AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F7A16C-C365-4EE7-B728-020C93A439AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B5E9DFB-47B8-4583-A1C4-BF5808A66B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B5E9DFB-47B8-4583-A1C4-BF5808A66B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B5E9DFB-47B8-4583-A1C4-BF5808A66B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B5E9DFB-47B8-4583-A1C4-BF5808A66B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
+
