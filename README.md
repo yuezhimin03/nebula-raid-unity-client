@@ -9,11 +9,12 @@
 | 模块 | 实现与可验证证据 |
 |---|---|
 | ECS-lite 战斗 | 组件采用 SoA 稠密数组；固定 30 Hz、整数毫米坐标、稳定实体 ID、同 tick 伤害延迟结算 |
+| C++17 原生实践 | RAII + 预分配 SoA、侵入式 uniform grid、稳定 C ABI；`SafeHandle`/PInvoke 往返测试覆盖真实 DLL |
 | 空间查询 | 可复用的 uniform grid；桶按实体 ID 写入，查询按固定坐标顺序，不依赖字典遍历顺序 |
 | 回放 | 记录每 tick 输入与 64-bit 状态校验和；严格文本编解码；可定位首个不一致 tick |
 | 客户端基础设施 | 有序同步事件总线、带统计的有界对象池、引用计数 + weighted LRU 资源缓存、并发加载合并 |
 | Lua 更新边界 | 严格 JSON manifest、路径/扩展名/大小/SHA-256/符号链接校验、staging 二次校验、运行时探针、原子版本指针与 last-known-good 回滚 |
-| 工程质量 | 无第三方测试依赖的 10 项行为测试、Console demo、预热后微基准、Windows/Linux CI |
+| 工程质量 | 10 项 C# 行为测试、4 项 C++ 行为测试、真实 P/Invoke 冒烟、Console demo、双微基准、Windows/Linux CI |
 
 核心入口：
 
@@ -31,6 +32,7 @@ dotnet build NebulaRaid.sln -c Release
 dotnet run --project tests/NebulaRaid.Tests/NebulaRaid.Tests.csproj -c Release --no-build
 dotnet run --project src/NebulaRaid.Demo/NebulaRaid.Demo.csproj -c Release --no-build
 dotnet run --project benchmarks/NebulaRaid.Benchmarks/NebulaRaid.Benchmarks.csproj -c Release --no-build -- --entities 1024 --ticks 300
+./scripts/verify-native.ps1
 ```
 
 Windows 也可直接运行：
@@ -79,6 +81,18 @@ flowchart LR
 
 `UnityBattleDriver` 是接入示例，不是完整游戏场景；仓库没有提交二进制贴图、模型或预制体。
 
+## C++17 原生模拟与 P/Invoke
+
+`native/` 增加了一条独立、可编译验证的原生实践路径：`NebulaNativeWorld` 用 RAII 管理预分配 SoA 状态与 uniform-grid scratch buffer，命令先整帧校验再修改，攻击采用 plan/resolve 同 tick 统一结算。边界只暴露 C ABI POD 结构，不跨 DLL 传递 STL、异常或 C++ 对象。
+
+C# 的 `NativeSimulationWorld` 通过 `SafeHandle` 保证 world 只释放一次；独立测试会真实加载 `NebulaNative.dll`，执行 create/spawn/step/query/dispose，而不是只检查声明能否编译。Windows 本机执行：
+
+```powershell
+./scripts/verify-native.ps1
+```
+
+本机一次 Release x64 结果（2026-07-29，MSVC 19.50.35720）：4/4 C++ 测试与 C# P/Invoke 往返通过；4,096 actor × 500 measured tick 耗时 403.141ms，即约 508 万 actor-step/s，checksum `0xB037CC58201CBA54`。计时只含原生 `step`，不是 Unity Player 帧率。ABI、构建、Unity 插件导入和验证边界详见 [docs/native-interop.md](docs/native-interop.md)。
+
 ## Lua 热更新：明确的安全边界
 
 仓库**没有集成或冒充集成 xLua/ToLua，也没有内置 Lua VM**。`ILuaRuntimeProbe` 是真实运行时的适配边界，`MissingLuaRuntimeProbe` 默认拒绝激活，做到 fail closed。
@@ -119,6 +133,7 @@ checksum=0x4CE7C786C41AA34A
 - ECS-lite 使用托管数组和字典空间网格，不是 Unity Entities/DOTS，也没有 Burst/Jobs。
 - Console 微基准不含渲染、物理、音频、资源反序列化和 Unity 主线程开销。
 - 当前环境未安装 Unity Editor，因此未执行 Unity 场景/Player 构建；CI 验证的是共享纯 C# 核心。
+- 原生插件已在本机 MSVC x64 与真实 .NET P/Invoke 下验证；尚未在 Unity Player/IL2CPP、移动端或主机工具链打包，仓库也不提交构建出的 DLL。
 
 ## 目录
 
@@ -126,8 +141,11 @@ checksum=0x4CE7C786C41AA34A
 Assets/Scripts/NebulaRaid/Core/       Unity 与 .NET 共用核心
 Assets/Scripts/NebulaRaid/Unity/      Unity 渲染/资源适配
 Assets/StreamingAssets/HotUpdateSamples/
+native/                                C++17 C ABI、SoA 模拟、测试与基准
+src/NebulaRaid.NativeInterop/          复用 Unity P/Invoke 源码的可编译项目
 src/NebulaRaid.Demo/                  Console 端到端演示
 tests/NebulaRaid.Tests/               无测试框架依赖的行为测试
+tests/NebulaRaid.NativeInterop.Tests/  真实托管/原生 DLL 往返测试
 benchmarks/NebulaRaid.Benchmarks/     可复现微基准入口
 docs/                                 架构、回放、热更和性能说明
 .github/workflows/ci.yml              Windows/Linux CI

@@ -45,3 +45,7 @@ checksum=0x4CE7C786C41AA34A
 5. 用与线上相同的 actor 数、技能密度、资源包和网络条件，至少采集多轮。
 
 CI 只跑较小的 benchmark smoke test，目的是确认入口可运行，不设置易受共享 runner 波动影响的硬性能门槛。
+
+## 与 C++17 原生微基准的关系
+
+`native/benchmarks/native_benchmark.cpp` 是另一条独立口径：它只测 C ABI 后面的 C++ `nebula_world_step`，使用不同场景规模，不可与本页 C# 数字直接做倍数对比。原生基准同样不代表 Unity Player FPS；P/Invoke 封送、Unity 主线程、渲染和真机温控都不在计时范围。复现命令、当前样本和边界见 [native-interop.md](native-interop.md)。
